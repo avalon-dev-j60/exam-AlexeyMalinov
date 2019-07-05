@@ -19,6 +19,18 @@ public class PublicationService {
         em.flush();
     }
 
+    public void update(Publication publication){
+        em.getTransaction().begin();
+        em.merge(publication);
+        em.getTransaction().commit();
+    }
+    
+    public void remove(Publication publication){
+        em.getTransaction().begin();
+        em.remove(publication);
+        em.getTransaction().commit();
+    }
+    
     public List<Publication> findByAuthor(User author) {
         try {
             return em.createNamedQuery("find-publications-by-user", Publication.class)
@@ -30,10 +42,20 @@ public class PublicationService {
     }
 
     public List<Publication> getAllPublications() {
-        try{
+        try {
             return em.createNamedQuery("list-publication", Publication.class).getResultList();
-        } catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
     }
+
+    public Publication getPublication(long id) {
+        try {
+            return em.createNamedQuery("find-publication-by-id", Publication.class).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    
+    
 }

@@ -35,4 +35,22 @@ public class ProjectService {
         return publicationService.getAllPublications();
     }
 
+    public void update(String title, String content, String id) throws ValidationException {
+        requireNonNull(title, "Title is required");
+        requireNonNull(content, "Content is required");
+        requireNonNull(id, "Id is required");
+        Publication publication = publicationService.getPublication(Long.getLong(id));
+        requireNonNull(publication, "Publication not found");
+        publication.setTitle(title);
+        publication.setContent(content.getBytes());
+        publicationService.update(publication);
+    }
+    
+    public void remove(String id) throws ValidationException{
+        requireNonNull(id, "Id is required");
+        Publication publication = publicationService.getPublication(Long.getLong(id));
+        requireNonNull(publication, "Publication not found");
+        publicationService.remove(publication);
+    }
+
 }

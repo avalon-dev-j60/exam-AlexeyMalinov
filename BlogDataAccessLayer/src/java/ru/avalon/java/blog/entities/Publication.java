@@ -18,34 +18,41 @@ import javax.persistence.TemporalType;
     @NamedQuery(
             name = "list-publication",
             query = "SELECT p FROM Publication AS p"
-    ),
+    )
+    ,
     @NamedQuery(
             name = "find-publications-by-user",
             query = "SELECT p FROM Publication AS p WHERE p.author = :user"
     )
+    ,
+        @NamedQuery(
+            name = "find-publication-by-id",
+            query = "SELECT p FROM Publication AS p WHERE p.id = :id"
+    )
 })
 @Entity
-public class Publication implements Serializable{
-    
+public class Publication implements Serializable {
+
     @Id
     @GeneratedValue
     private long id;
-    
+
     @Column(nullable = false) //обязательное поле призаписи
     private String title;
-    
+
     @Lob
     @Column(columnDefinition = "blob")
     private byte[] content;
-    
+
     @ManyToOne //выбираем, что делать с связными объектами (cascade = CascadeType.ALL). В данном случаи не нужно ничего.
     @JoinColumn(nullable = false) //обязательное поле из внешней таблице
     private User author;
-    
+
     @Temporal(TemporalType.TIMESTAMP) //Для того чтобы база сама указывала дату при создании записи
     private Date created;
-  
-    protected Publication(){}
+
+    protected Publication() {
+    }
 
     public Publication(String title, byte[] content, User author) {
         this.title = title;
@@ -77,6 +84,8 @@ public class Publication implements Serializable{
     public Date getCreated() {
         return created;
     }
-    
-    
+
+    public long getId() {
+        return id;
+    }
 }

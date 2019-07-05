@@ -4,6 +4,9 @@
 <form action="${pageContext.servletContext.contextPath}${location}" method="post">
     <core:error/>
     <p class="row gap-bottom">
+        <input type="text" name="id" value="${param.id}" placeholder="Id">
+    </p>
+    <p class="row gap-bottom">
         <input type="text" name="title" value="${param.title}" placeholder="Title" required>
     </p>
     <p class="row gap-bottom">

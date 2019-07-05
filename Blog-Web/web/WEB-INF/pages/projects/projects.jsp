@@ -18,6 +18,12 @@
                 </div>
                 <div class="row pull-left">
                     ${item.created}: ${item.author.email}
+                    <div class="pull-right">
+                        <c:if test="${sessionScope.user == item.author.email}">
+                            <core:link title="Edit" location="/projects/edit?title=${item.title}&content=${item.content}&id=${item.id}"/>
+                            <core:link title="Remove" location="/projects/edit?id=${item.id}&remove=true"/>
+                        </c:if>
+                    </div>
                 </div>
             </c:forEach>
 
