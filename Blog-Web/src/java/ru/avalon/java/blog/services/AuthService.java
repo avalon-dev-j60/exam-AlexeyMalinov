@@ -44,5 +44,4 @@ public class AuthService {
     public void signOut() {
         session.invalidate();
     }
-
 }

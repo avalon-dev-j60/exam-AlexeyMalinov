@@ -1,9 +1,3 @@
-<%-- 
-    Document   : login
-    Created on : 22.06.2019, 13:06:44
-    Author     : JAVA
---%>
-
 <%@tag description="put the tag description here" pageEncoding="UTF-8"%>
 <%@taglib prefix="core" tagdir="/WEB-INF/tags/core/"%>
 <form action="${pageContext.servletContext.contextPath}/sign-in" method="post">

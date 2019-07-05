@@ -2,14 +2,25 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="core" tagdir="/WEB-INF/tags/core" %>
 <core:layout title="Projects">
+    <c:if test="${not empty sessionScope.user}">
+        <div class="row">
+            <core:link title="Create new publication" location="/projects/create"/>
+        </div>
+    </c:if>
     <c:choose>
         <c:when test="${not empty projects}">
             <c:forEach items="${projects}" var="item">
+                <div class="row">
+                    ${item.title}
+                </div>
                 <div class="row">           
-                    ${item}
+                    ${item.content}
+                </div>
+                <div class="row pull-left">
+                    ${item.created}: ${item.author.email}
                 </div>
             </c:forEach>
-       
+
         </c:when>
         <c:otherwise>
             <p>

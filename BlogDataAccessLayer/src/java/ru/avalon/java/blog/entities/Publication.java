@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -20,7 +21,7 @@ import javax.persistence.TemporalType;
     ),
     @NamedQuery(
             name = "find-publications-by-user",
-            query = "SELECT p FROM Publication AS p WHERE p.authot = :user"
+            query = "SELECT p FROM Publication AS p WHERE p.author = :user"
     )
 })
 @Entity
@@ -33,21 +34,23 @@ public class Publication implements Serializable{
     @Column(nullable = false) //обязательное поле призаписи
     private String title;
     
-    private String content;
+    @Lob
+    @Column(columnDefinition = "blob")
+    private byte[] content;
     
     @ManyToOne //выбираем, что делать с связными объектами (cascade = CascadeType.ALL). В данном случаи не нужно ничего.
     @JoinColumn(nullable = false) //обязательное поле из внешней таблице
-    private User authot;
+    private User author;
     
     @Temporal(TemporalType.TIMESTAMP) //Для того чтобы база сама указывала дату при создании записи
     private Date created;
   
     protected Publication(){}
 
-    public Publication(String title, String content, User authot) {
+    public Publication(String title, byte[] content, User author) {
         this.title = title;
         this.content = content;
-        this.authot = authot;
+        this.author = author;
         created = new Date();
     }
 
@@ -55,7 +58,25 @@ public class Publication implements Serializable{
         this.title = title;
     }
 
-    public void setContent(String content) {
+    public void setContent(byte[] content) {
         this.content = content;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return new String(content);
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+    
+    
 }
