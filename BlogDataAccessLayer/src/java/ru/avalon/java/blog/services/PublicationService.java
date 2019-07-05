@@ -51,7 +51,9 @@ public class PublicationService {
 
     public Publication getPublication(long id) {
         try {
-            return em.createNamedQuery("find-publication-by-id", Publication.class).getSingleResult();
+            return em.createNamedQuery("find-publication-by-id", Publication.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
