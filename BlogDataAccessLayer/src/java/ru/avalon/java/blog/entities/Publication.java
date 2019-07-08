@@ -12,7 +12,7 @@ import javax.persistence.*;
     ,
     @NamedQuery(
             name = "find-publications-by-user",
-            query = "SELECT item FROM Publication AS item WHERE item.authot = :user"
+            query = "SELECT item FROM Publication AS item WHERE item.author = :user"
     )
     ,
     @NamedQuery(
@@ -35,7 +35,7 @@ public class Publication implements Serializable {
 
     @ManyToOne //выбираем, что делать с связными объектами (cascade = CascadeType.ALL). В данном случаи не нужно ничего.
     @JoinColumn(nullable = false) //обязательное поле из внешней таблице
-    private User authot;
+    private User author;
 
     @Temporal(TemporalType.TIMESTAMP) //Для того чтобы база сама указывала дату при создании записи
     private Date created;
@@ -46,7 +46,7 @@ public class Publication implements Serializable {
     public Publication(String title, String content, User authot) {
         this.title = title;
         this.content = content;
-        this.authot = authot;
+        this.author = authot;
         created = new Date();
     }
 
@@ -70,8 +70,8 @@ public class Publication implements Serializable {
         return content;
     }
 
-    public User getAuthot() {
-        return authot;
+    public User getAuthor() {
+        return author;
     }
 
     public Date getCreated() {

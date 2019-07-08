@@ -12,9 +12,9 @@ import ru.avalon.java.blog.entities.Publication;
 import ru.avalon.java.blog.entities.User;
 import ru.avalon.java.blog.exceptions.ValidationException;
 import ru.avalon.java.blog.services.PublicationService;
+import ru.avalon.java.blog.services.AuthService;
 import static ru.avalon.java.blog.helpers.RedirectHelper.*;
 import static ru.avalon.java.blog.helpers.Validation.*;
-import ru.avalon.java.blog.services.AuthService;
 
 @WebServlet("/publication/create")
 public class PublicationCreateServlet extends HttpServlet {
@@ -43,6 +43,7 @@ public class PublicationCreateServlet extends HttpServlet {
             requireNonNull(user, "You should be authorized to create publication");
             Publication publication = new Publication(title, content, user);
             publicationService.create(publication);
+            redirectBack(request, response);
         } catch (ValidationException e) {
             request.setAttribute("exception", e);
             doGet(request, response);
