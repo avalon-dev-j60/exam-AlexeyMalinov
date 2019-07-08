@@ -2,32 +2,22 @@ package ru.avalon.java.blog.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @NamedQueries({
     @NamedQuery(
             name = "list-publication",
-            query = "SELECT p FROM Publication AS p"
+            query = "SELECT item FROM Publication AS item"
     )
     ,
     @NamedQuery(
             name = "find-publications-by-user",
-            query = "SELECT p FROM Publication AS p WHERE p.author = :user"
+            query = "SELECT item FROM Publication AS item WHERE item.authot = :user"
     )
     ,
-        @NamedQuery(
+    @NamedQuery(
             name = "find-publication-by-id",
-            query = "SELECT p FROM Publication AS p WHERE p.id = :id"
+            query = "SELECT item FROM Publication AS item WHERE item.id = :id"
     )
 })
 @Entity
@@ -40,13 +30,12 @@ public class Publication implements Serializable {
     @Column(nullable = false) //обязательное поле призаписи
     private String title;
 
-    @Lob
-    @Column(columnDefinition = "blob")
-    private byte[] content;
+    @Column(columnDefinition = "long varchar") 
+    private String content;
 
     @ManyToOne //выбираем, что делать с связными объектами (cascade = CascadeType.ALL). В данном случаи не нужно ничего.
     @JoinColumn(nullable = false) //обязательное поле из внешней таблице
-    private User author;
+    private User authot;
 
     @Temporal(TemporalType.TIMESTAMP) //Для того чтобы база сама указывала дату при создании записи
     private Date created;
@@ -54,10 +43,10 @@ public class Publication implements Serializable {
     protected Publication() {
     }
 
-    public Publication(String title, byte[] content, User author) {
+    public Publication(String title, String content, User authot) {
         this.title = title;
         this.content = content;
-        this.author = author;
+        this.authot = authot;
         created = new Date();
     }
 
@@ -65,8 +54,12 @@ public class Publication implements Serializable {
         this.title = title;
     }
 
-    public void setContent(byte[] content) {
+    public void setContent(String content) {
         this.content = content;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -74,18 +67,16 @@ public class Publication implements Serializable {
     }
 
     public String getContent() {
-        return new String(content);
+        return content;
     }
 
-    public User getAuthor() {
-        return author;
+    public User getAuthot() {
+        return authot;
     }
 
     public Date getCreated() {
         return created;
     }
-
-    public long getId() {
-        return id;
-    }
+    
+    
 }

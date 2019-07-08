@@ -44,4 +44,12 @@ public class AuthService {
     public void signOut() {
         session.invalidate();
     }
+    
+    public User getUser(){
+        String email = (String) session.getAttribute("user");
+        if(email != null){
+            return userService.findByEmail(email);
+        }
+        return null;
+    }
 }

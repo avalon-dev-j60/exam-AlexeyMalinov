@@ -34,7 +34,7 @@ public class SignInServlet extends HttpServlet {
         String password  = request.getParameter("password");
         try{
             authService.signIn(email, password);
-            RedirectHelper.localRedirect(request, response, "/");
+            RedirectHelper.LocalRedirect(request, response, "/");
         } catch (ValidationException e ){
             request.setAttribute("exception", e);
             doGet(request, response);
