@@ -5,24 +5,23 @@ import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import ru.avalon.java.blog.entities.Publication;
+import javax.servlet.http.*;
+import ru.avalon.java.blog.entities.*;
+import ru.avalon.java.blog.services.*;
 import ru.avalon.java.blog.exceptions.ValidationException;
-import ru.avalon.java.blog.services.PublicationService;
-import ru.avalon.java.blog.services.AuthService;
-import ru.avalon.java.blog.entities.User;
 import static ru.avalon.java.blog.helpers.RedirectHelper.*;
 import static ru.avalon.java.blog.helpers.Validation.*;
 
-@WebServlet("/publication/edit")
-public class PublicationEditServlet extends HttpServlet {
+@WebServlet("/comment/create")
+public class CommentCreateServlet extends HttpServlet {
 
-    private static final String JSP = "/WEB-INF/pages/publications/edit.jsp";
+    private static final String JSP = "/WEB-INF/pages/comments/create.jsp";
 
     @EJB
     PublicationService ps;
+
+    @EJB
+    CommentService cs;
 
     @Inject
     AuthService as;
@@ -42,24 +41,20 @@ public class PublicationEditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            String title = request.getParameter("title");
-            String content = request.getParameter("content");
             String id = request.getParameter("id");
-            require(title, "Title is required!");
-            require(content, "Content is required!");
+            String text = request.getParameter("text");
+            require(text, "Text is required");
+            Publication publication = getPublication(id);
             User user = as.getUser();
             requireNonNull(user, "You should be authorized to edit publication");
-            Publication publication = getPublication(id);
-            publication.setTitle(title);
-            publication.setContent(content);
-            ps.update(publication);
-            localRedirect(request, response, "/");
+            Comment comment = new Comment(text, publication, user);
+            cs.create(comment);
+            localRedirect(request, response, "/publication?id="+id);
         } catch (ValidationException e) {
             request.setAttribute("exception", e);
             doGet(request, response);
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
+
     }
 
     private Publication getPublication(String id) throws ValidationException, NumberFormatException {

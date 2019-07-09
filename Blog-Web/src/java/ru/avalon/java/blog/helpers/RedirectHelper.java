@@ -16,7 +16,7 @@ public final class RedirectHelper {
         response.setHeader(HttpHeaders.LOCATION, location);
     }
 
-    public static void LocalRedirect(HttpServletRequest request, HttpServletResponse response, String location) throws ServletException, IOException {
+    public static void localRedirect(HttpServletRequest request, HttpServletResponse response, String location) throws ServletException, IOException {
         location = request.getContextPath() + location;
         redirect(request, response, location);
     }
@@ -25,7 +25,7 @@ public final class RedirectHelper {
         String referer = request.getHeader("Referer");
         String currentLocation = request.getRequestURL().toString();
         if (referer == null || referer.equals(currentLocation)) {
-            LocalRedirect(request, response, "/");
+            localRedirect(request, response, "/");
         } else {
             redirect(request, response, referer);
         }

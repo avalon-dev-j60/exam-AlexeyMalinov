@@ -23,7 +23,7 @@ public class PublicationService {
     }
 
     public void delete(Publication publication) {
-        em.remove(publication);
+        em.remove(em.merge(publication));
     }
 
     public Publication find(long id) {
@@ -41,7 +41,7 @@ public class PublicationService {
             return em.createNamedQuery("list-publication", Publication.class)
                     .getResultList();
         } catch (NoResultException e) {
-            return Collections.emptyList();
+            return Collections.EMPTY_LIST;
         }
     }
 }

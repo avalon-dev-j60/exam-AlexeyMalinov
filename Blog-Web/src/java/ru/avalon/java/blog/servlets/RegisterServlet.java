@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
         String confirmation = request.getParameter("confirmation");
         try{
             authService.register(email, password, confirmation);
-            RedirectHelper.LocalRedirect(request, response, "/sign-in");
+            RedirectHelper.localRedirect(request, response, "/sign-in");
         } catch (ValidationException e){
             request.setAttribute("exception", e);
             doGet(request,response);
