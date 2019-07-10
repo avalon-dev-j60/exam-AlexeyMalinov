@@ -1,7 +1,6 @@
 package ru.avalon.java.blog.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -41,9 +40,6 @@ public class Publication implements Serializable {
     @Temporal(TemporalType.TIMESTAMP) //Для того чтобы база сама указывала дату при создании записи
     private Date created;
     
-    @OneToMany(cascade = CascadeType.ALL)
-    private Collection<Comment> comments;
-
     protected Publication() {
     }
 
